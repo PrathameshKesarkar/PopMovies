@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:descendantFocusability="blocksDescendants"
+                tools:context=".SatggeredExample">
+
+    <com.etsy.android.grid.util.DynamicHeightImageView
+        android:id="@+id/imgView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/footer_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_alignBottom="@id/imgView"
+        android:layout_alignLeft="@id/imgView"
+        android:layout_alignRight="@id/imgView"
+        android:background="#07000000"
+        android:gravity="center"
+        android:textColor="#FFF"/>
+
+</RelativeLayout>
