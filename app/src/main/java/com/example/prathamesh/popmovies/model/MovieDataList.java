@@ -32,7 +32,7 @@ public class MovieDataList  {
     public void setSingleResult(Results result){
         mResultsArrayList.add(result);
     }
-    public Results getSingleResultByPostion(int pos){
+    public Results getSingleResultByPosition(int pos){
         return mResultsArrayList.get(pos);
     }
     public void  clearList(){

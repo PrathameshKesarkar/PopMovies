@@ -1,8 +1,6 @@
 package com.example.prathamesh.popmovies;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -11,27 +9,19 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.prathamesh.popmovies.network_interface.MoviesInterface;
+import com.example.prathamesh.popmovies.model.MovieDataList;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.lang.annotation.Target;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Formatter;
-
-import retrofit.RestAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -40,8 +30,16 @@ public class DetailMovieFragment extends Fragment {
 
     private final String BASE_URl = "http://image.tmdb.org/t/p/w500/";
     private static final String BUNDLE_INT = "DetailMovie";
-    private int mItemPostion;
+    private int mItemPosition;
     private Format mFormatter;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mItemPosition = getArguments().getInt(DetailMovieActivity.BUNDLE_ARGS);
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,13 +60,13 @@ public class DetailMovieFragment extends Fragment {
 
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         final CollapsingToolbarLayout templayout = collapsingToolbarLayout;
-        collapsingToolbarLayout.setTitle(MoviesList.get(getActivity()).getAtPostion(mItemPostion).getOrignalTitle());
+        collapsingToolbarLayout.setTitle(MovieDataList.get(getActivity()).getSingleResultByPosition(mItemPosition).getOriginal_title());
         mFormatter = new SimpleDateFormat("yyyy-MM-dd");
         final Window window = getActivity().getWindow();
 
         //backDrop Poster
         final ImageView imageView = (ImageView) view.findViewById(R.id.detail_header_imageview);
-        String header_image = MoviesList.get(getActivity()).getAtPostion(mItemPostion).getBackDrop();
+        String header_image = MovieDataList.get(getActivity()).getSingleResultByPosition(mItemPosition).getBackdrop_path();
         Picasso.with(getActivity()).load(BASE_URl + header_image).into(imageView, new Callback() {
             @Override
             public void onSuccess() {
@@ -93,31 +91,17 @@ public class DetailMovieFragment extends Fragment {
         });
         collapsingToolbarLayout = templayout;
 
-        rating.setText(MoviesList.get(getActivity()).getAtPostion(mItemPostion).getUserRating());
+        rating.setText(String.valueOf(MovieDataList.get(getActivity()).getSingleResultByPosition(mItemPosition).getVote_average()));
        //using MVC Pattern to get Poster Url and then Loading in ImageView
-        Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w185"+MoviesList.get(getActivity()).getAtPostion(mItemPostion).getMoviePosterString()).into(poster);
+        Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w185"+MovieDataList.get(getActivity()).getSingleResultByPosition(mItemPosition).getPoster_path()).into(poster);
 
-        releaseDate.setText(mFormatter.format(MoviesList.get(getActivity()).getAtPostion(mItemPostion).getReleaseDate()));
+        releaseDate.setText(MovieDataList.get(getActivity()).getSingleResultByPosition(mItemPosition).getRelease_date());
 
-        plot.setText(MoviesList.get(getActivity()).getAtPostion(mItemPostion).getPlot());
+        plot.setText(MovieDataList.get(getActivity()).getSingleResultByPosition(mItemPosition).getOverview());
 
         return view;
     }
 
-    public static DetailMovieFragment newInstance(int postion_data) {
 
-        Bundle args = new Bundle();
-        args.putInt(BUNDLE_INT, postion_data);
-        DetailMovieFragment fragment = new DetailMovieFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mItemPostion = getArguments().getInt(BUNDLE_INT);
-
-    }
 
 }

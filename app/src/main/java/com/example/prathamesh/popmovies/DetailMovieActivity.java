@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 public class DetailMovieActivity extends AppCompatActivity {
 
 
+    public static  final  String BUNDLE_ARGS="com.example.prathamesh.popmovies.BUNDLETAG";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +37,11 @@ public class DetailMovieActivity extends AppCompatActivity {
 
     DetailMovieFragment createFragment() {
         Intent intent = getIntent();
-        int data_position = intent.getIntExtra(MoviesFragment.INTENT_ITEM_POSTION, 0);
-        return DetailMovieFragment.newInstance(data_position);
+        int data_position = intent.getIntExtra(PopMoviesActivity.INTENT_EXTRA, 0);
+        DetailMovieFragment fragment = new DetailMovieFragment();
+        Bundle positionBundle = new Bundle();
+        positionBundle.putInt(BUNDLE_ARGS,data_position);
+        fragment.setArguments(positionBundle);
+        return fragment;
     }
 }

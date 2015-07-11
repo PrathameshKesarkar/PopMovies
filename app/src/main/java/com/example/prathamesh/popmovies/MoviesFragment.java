@@ -113,8 +113,8 @@ public class MoviesFragment extends Fragment {
         moviesInterface.getResponse(sortingType, API_KEY_VALUE, new Callback<MoviePOJO>() {
             @Override
             public void success(MoviePOJO moviePojo, Response response) {
-                Toast.makeText(getActivity(), "Hitting Sucess", Toast.LENGTH_LONG).show();
 
+                //initializing the adapter
                 SimpleMovieAdapter adapter = new SimpleMovieAdapter(getActivity());
 
                 //Condtion to check if the Previously selected Type is equal to Current Selected
@@ -123,8 +123,14 @@ public class MoviesFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                     previousPref = sortingType;
                 }
+
+                //Initializing the Array List in the Controller Class of results
                 MovieDataList.get(getActivity()).setResultsArrayList(moviePojo.getResults());
+
+                //Setting up the Layout manager
                 recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
+                //Setting the Click Listener
                 recyclerView.addOnItemTouchListener(new MoviesRecyclerTouchListener(getActivity(), recyclerView, new RecyclerViewClickListener() {
                     @Override
                     public void onClick(View view, int postion) {
