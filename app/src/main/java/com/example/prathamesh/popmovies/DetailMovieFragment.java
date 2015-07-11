@@ -21,6 +21,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.prathamesh.popmovies.network_interface.MoviesInterface;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -29,6 +30,8 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Formatter;
+
+import retrofit.RestAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -116,4 +119,5 @@ public class DetailMovieFragment extends Fragment {
         mItemPostion = getArguments().getInt(BUNDLE_INT);
 
     }
+
 }

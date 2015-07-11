@@ -39,5 +39,4 @@ public class DetailMovieActivity extends AppCompatActivity {
         int data_position = intent.getIntExtra(MoviesFragment.INTENT_ITEM_POSTION, 0);
         return DetailMovieFragment.newInstance(data_position);
     }
-
 }

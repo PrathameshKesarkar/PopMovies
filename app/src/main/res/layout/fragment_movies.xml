@@ -1,19 +1,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-             android:background="#FFF"
+    android:background="#000"
     tools:context="com.example.prathamesh.popmovies.MoviesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <com.etsy.android.grid.StaggeredGridView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/grid_view"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        app:column_count_landscape="3"
-        app:column_count_portrait="2" />
-
-
+        android:layout_height="match_parent"/>
 </FrameLayout>
