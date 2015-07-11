@@ -6,9 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
-public class PopMoviesActivity extends AppCompatActivity {
+public class PopMoviesActivity extends AppCompatActivity implements MoviesFragment.MoviesCallback{
 
     android.support.v7.widget.Toolbar mToolbar;
     @Override
@@ -22,4 +23,8 @@ public class PopMoviesActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void getCurrentItem(int position) {
+        Toast.makeText(this,"I am gettin Currnet Postion Wooh! "+position,Toast.LENGTH_LONG).show();
+    }
 }

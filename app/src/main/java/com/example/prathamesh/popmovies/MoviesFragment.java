@@ -23,11 +23,9 @@ import android.widget.Toast;
 
 import com.example.prathamesh.popmovies.model.MovieDataList;
 import com.example.prathamesh.popmovies.model.MoviePOJO;
-import com.example.prathamesh.popmovies.model.Results;
 import com.example.prathamesh.popmovies.network_interface.MoviesInterface;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -43,7 +41,7 @@ public class MoviesFragment extends Fragment {
     ArrayList<String> mImageStrings = new ArrayList<String>();
     SimpleMovieAdapter mSimpleMovieAdapter;
 
-    private  MoviesCallback mMoviesCallback;
+    MoviesCallback mMoviesCallback;
     public static final String BASE_URL = "http://api.themoviedb.org";
     //Storing the default Value for Shared Pref so that if the User Pref Changes it can be Updated in the UI
     // and We can clear the List that contains the previous Results
@@ -82,7 +80,7 @@ public class MoviesFragment extends Fragment {
         if (isConnected()) {
             SharedPreferences sortPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String sort_type = sortPref.getString(getResources().getString(R.string.pref_key), "popularity.desc");
-            retroNetworkInizlier(sort_type);
+            retroNetworkInitializer(sort_type);
 
         } else {
             Toast.makeText(getActivity(), "Check for network Connection", Toast.LENGTH_SHORT).show();
@@ -106,11 +104,11 @@ public class MoviesFragment extends Fragment {
     }
 
 
-    private void retroNetworkInizlier(final String sortingType) {
+    private void retroNetworkInitializer(final String sortingType) {
         final String API_KEY_VALUE = "b2a58f9c5024d33c3441440f14f5dd2f";
 
         //Calling the retrofit RestAdapter to initalize Movie in Pojo
-        RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(BASE_URL).build();
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(BASE_URL).build();
         MoviesInterface moviesInterface = restAdapter.create(MoviesInterface.class);
         moviesInterface.getResponse(sortingType, API_KEY_VALUE, new Callback<MoviePOJO>() {
             @Override
@@ -127,6 +125,12 @@ public class MoviesFragment extends Fragment {
                 }
                 MovieDataList.get(getActivity()).setResultsArrayList(moviePojo.getResults());
                 recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                recyclerView.addOnItemTouchListener(new MoviesRecyclerTouchListener(getActivity(), recyclerView, new RecyclerViewClickListener() {
+                    @Override
+                    public void onClick(View view, int postion) {
+                        mMoviesCallback.getCurrentItem(postion);
+                    }
+                }));
                 recyclerView.setAdapter(adapter);
 
             }
@@ -159,15 +163,15 @@ public class MoviesFragment extends Fragment {
     }
 
 
-    private ArrayList<String> getMoviesArryList(List<Results> results) {
-        //Gives the List of Movie Poster used for populating GridView
-        ArrayList<String> listData = new ArrayList<String>();
-        for (Results result : results) {
-            listData.add(result.getPoster_path());
-        }
-        return listData;
-    }
+
+    //Interface to add the data back to Activity so it can be passed to DetailActivity
+    //this removes the tight coupling between the fragment even if tablet Config is used
     interface  MoviesCallback{
-        void getCurrentItem(int postion);
+        void getCurrentItem(int position);
+    }
+
+   //Interface is used for handling recyclerView item Click
+    interface RecyclerViewClickListener{
+            void onClick(View view,int postion);
     }
 }
